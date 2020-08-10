@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Geo - USA States</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 14px;
+			  color: #333;
+			}
+
+			path {
+			  fill: #ddd;
+			  stroke: #aaa;
+			}
+
+			path:hover {
+			  fill: orange;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="800" height="800">
+		</svg>
+
+        <script type="text/javascript">
+        	d3.json("usa_mainland.json", drawUSA);
+
+        	function drawUSA(error, states) {
+        		var width = 800;
+        		var height = 800;
+
+	        	var projection = d3.geoEquirectangular()
+	        		.fitExtent([[0,0], [width, height]], states);
+	        	
+				var geoGenerator = d3.geoPath()
+					.projection(projection);
+
+				var paths = d3.select('svg')
+					.selectAll('path')
+					.data(states.features)
+					.enter()
+					.append('path')
+					.attr('d', geoGenerator);
+
+				var texts = d3.select('svg')
+					.selectAll('text')
+					.data(states.features)
+					.enter()
+					.append('text')
+					.attr('text-anchor', 'middle')
+					.attr('alignment-baseline', 'middle')
+					.attr('opacity', 0.5)
+					.text(function(d) {
+						return d.properties.STUSPS10;
+					})
+					.attr('transform', function(d) {
+						var center = geoGenerator.centroid(d);
+						return 'translate (' + center + ')';
+					});
+			}
+
+        </script>
+
+	</body>
+</html>
