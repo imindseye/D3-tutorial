@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Convex Hull</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			rect {
+			  fill: none;
+			  pointer-events: all;
+			}
+
+			.hull {
+			  fill: steelblue;
+			  stroke: steelblue;
+			  stroke-width: 32px;
+			  stroke-linejoin: round;
+			}
+
+			circle {
+			  fill: white;
+			  stroke: black;
+			  stroke-width: 1.5px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg>
+		</svg>
+
+        <script type="text/javascript">
+			var width = 960,
+			    height = 500;
+
+			var svg = d3.select("svg")
+			    .attr("width", width)
+			    .attr("height", height);
+
+			var randomX = d3.randomNormal(width / 2, 60),
+			    randomY = d3.randomNormal(height / 2, 60),
+			    points = d3.range(100).map(function() { return [randomX(), randomY()]; });
+
+			var boundaryPoints = d3.polygonHull(points);
+			var hull = svg.append("path")
+			    .attr("class", "hull")
+			    .attr("d", "M" + boundaryPoints.join("L") + "Z");
+
+			var circle = svg.selectAll("circle")
+				.data(points).enter()
+				.append("circle")
+				.attr("r", 3)
+				.attr("transform", function(d) { 
+					return "translate(" + d + ")"; 
+				});
+
+        </script>
+
+	</body>
+</html>

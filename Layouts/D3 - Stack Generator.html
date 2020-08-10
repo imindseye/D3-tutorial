@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Stack Generator</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		</svg>
+
+        <script type="text/javascript">
+        	
+			var data = [
+			  {day: 'Mon', apricots: 120, blueberries: 180, cherries: 100},
+			  {day: 'Tue', apricots: 60, blueberries: 185, cherries: 105},
+			  {day: 'Wed', apricots: 100, blueberries: 215, cherries: 110},
+			  {day: 'Thu', apricots: 80, blueberries: 230, cherries: 105},
+			  {day: 'Fri', apricots: 120, blueberries: 240, cherries: 105}
+			];
+
+			// The colors of apricots, blueberries, and cherries
+			var colors = ['#FBB65B', '#513551', '#de3163'];
+
+			var stackGenerator = d3.stack()
+			  .keys(['apricots', 'blueberries', 'cherries']);
+
+			// Create a g element for each series/layer
+			var g = d3.select('svg')
+				.selectAll('.series')
+				.data(stackGenerator(data))
+				.enter().append('g')
+				.classed('series', true)
+				.attr('fill', function(d, i) {
+					return colors[i];
+				});
+
+			// For each series/layer create a rect element for each day
+			g.selectAll('rect')
+				.data(function(d) {
+					return d;
+				})
+				.enter().append('rect')
+				.attr('x', function(d, i) {
+					return i * 100;
+				})
+				.attr('y', function(d) {
+					return d[0];
+				})
+				.attr('width', 99)
+				.attr('height', function(d) {
+					return d[1] - d[0];
+				});
+				
+
+        </script>
+
+	</body>
+</html>

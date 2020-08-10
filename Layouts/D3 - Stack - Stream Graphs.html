@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Stack - Stream Graphs</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g></g>
+		</svg>
+
+        <script type="text/javascript">
+
+			var colors = ['#FBB65B', '#513551', '#de3163'];
+
+			var data = [
+			  {day: 'Mon', apricots: 120, blueberries: 180, cherries: 100},
+			  {day: 'Tue', apricots: 60, blueberries: 185, cherries: 105},
+			  {day: 'Wed', apricots: 100, blueberries: 215, cherries: 110},
+			  {day: 'Thu', apricots: 80, blueberries: 230, cherries: 105},
+			  {day: 'Fri', apricots: 120, blueberries: 240, cherries: 105}
+			];
+
+			// recommended setting
+			var stackGenerator = d3.stack()
+			  .keys(['apricots', 'blueberries', 'cherries'])
+			  .order(d3.stackOrderInsideOut)
+			  // d3.stackOrderNone
+			  // d3.stackOrderAscending
+			  // d3.stackOrderDescending
+			  // d3.stackOrderInsideOut
+			  // d3.stackOrderReverse
+			  .offset(d3.stackOffsetWiggle);
+			  // d3.stackOffsetExpand
+			  // d3.stackOffsetDiverging
+			  // d3.stackOffsetNone
+			  // d3.stackOffsetSilhouette
+			  // d3.stackOffsetWiggle
+
+			// default setting
+			// var stackGenerator = d3.stack()
+			//   .keys(['apricots', 'blueberries', 'cherries'])
+			//   .order(d3.stackOrderNone)
+			//   .offset(d3.stackOffsetDiverging);
+
+			var areaGenerator = d3.area()
+				.x(function(d, i) {
+					return i * 200;
+				})
+				.y0(function(d) {
+					return d[0];
+				})
+				.y1(function(d) {
+					return d[1];
+				})
+				.curve(d3.curveCatmullRom);
+
+			d3.select('g')
+				.selectAll('path')
+				.data(stackGenerator(data))
+				.enter()
+				.append('path')
+				.style('fill', function(d, i) {
+					return colors[i];
+				})
+				.attr('d', areaGenerator)
+
+        </script>
+
+	</body>
+</html>

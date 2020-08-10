@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Pie Generator</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			path {
+				fill: orange;
+				stroke: white;
+			}
+			text {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  font-weight: bold;
+			  fill: white;
+			  text-anchor: middle;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g transform="translate(300, 110)"></g>
+		</svg>
+
+        <script type="text/javascript">
+			var data = [10, 40, 30, 20, 60, 80];
+			var pieGenerator = d3.pie();
+			var arcData = pieGenerator(data);
+
+			var arcGenerator = d3.arc()
+				.innerRadius(20)
+				.outerRadius(100);
+
+			d3.select('g')
+				.selectAll('path')
+				.data(arcData)
+				.enter()
+				.append('path')
+				.attr('d', arcGenerator);
+
+			d3.select('g')
+				.selectAll('text')
+				.data(arcData)
+				.enter()
+				.append('text')
+				.each(function(d) {
+					var centroid = arcGenerator.centroid(d);
+					d3.select(this)
+						.attr('x', centroid[0])
+						.attr('y', centroid[1])
+						.attr('dy', '0.33em')
+						.text(d.data);
+				});
+
+        </script>
+
+	</body>
+</html>
