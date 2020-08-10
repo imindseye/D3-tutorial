@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Transition - Populations of Cities</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			table {
+				text-align: center;
+			}
+			th, td {
+			    border-bottom: 1px solid #ddd;
+			}
+			th {
+			    background-color: black;
+			    color: white;
+			}
+			tr:hover {background-color: #f5f5f5;}
+			tr:nth-child(even) {background-color: #f2f2f2;}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="600" height="200">
+		</svg>
+
+        <script type="text/javascript">
+        	var width = 500;
+        	var height = 160;
+
+        	var cities = [
+			  { name: 'London', population: 8674000},
+			  { name: 'New York', population: 8406000},
+			  { name: 'Sydney', population: 4293000},
+			  { name: 'Paris', population: 2244000},
+			  { name: 'Beijing', population: 11510000}
+			];
+
+			var svg = d3.select("svg");
+			var fontSize = 18;
+
+			var cityNames = cities.map(function(d) {return d.name});
+			var bandScale = d3.scaleBand()
+				.domain(cityNames)
+				.range([0, height])
+				.paddingOuter(0.33)
+				.paddingInner(0.33);
+
+			var pop2width = d3.scaleLinear()
+				.domain([0, 1.2*1e7])
+				.range([0, width]);
+
+			var xAxis = d3.axisBottom(pop2width)
+							.ticks(6);
+							// .tickPadding(3);
+							// .tickFormat(d3.format(".1s"));
+
+			svg.append("g")
+				.classed('axis', true)
+				.attr("transform", 
+					"translate(80, " 
+					+ height + ")")
+				.call(xAxis);
+
+			var barChartG = svg.append('g')
+				.attr('id', 'bar-chart');
+
+			var texts = barChartG.append('g')
+				.selectAll('text')
+				.data(cities)
+				.enter().append("text")
+				.attr('x', 0)
+				.attr('y', function(d, i) {
+					return bandScale(d.name);
+				})
+				.attr('font-size', fontSize)
+				// set anchor and alignment for texts
+				.attr('text-anchor', 'start')
+				.attr('alignment-baseline', 'hanging')
+				.text(function(d) {
+					return d.name;
+				});
+
+			var rects =  barChartG.selectAll("rect")
+				.data(cities)
+				.enter().append("rect")
+				.attr("x", 80)
+				.attr("y", function(d) {
+					return bandScale(d.name);
+				})
+				.attr("height", bandScale.bandwidth())
+				.style("fill", "black");
+
+			var t = d3.transition()
+				// .on('start', function() { console.log("Started"); })
+				// .on('end', function() { console.log("Finished"); })
+				.delay(200)
+				.duration(1000);
+
+			rects
+				.transition(t)
+				.attr("width", function(d, i) { 
+					return pop2width(d.population);
+				});
+
+			// Directly create a transition
+			// rects
+			// 	.transition()
+			// 	.delay(200)
+			// 	.duration(1000)
+			// 	.attr("width", function(d, i) { 
+			// 		return pop2width(d.population);
+			// 	});
+
+			var colorScale = d3.scaleOrdinal()
+				.domain(cityNames)
+				.range(d3.schemeCategory10);
+
+			// var rects = svg.selectAll("rect");
+			rects
+				.on('mouseover', function(d, i) {
+					d3.select(this)
+						.style('fill', colorScale(d.name));
+				})
+				.on('mouseleave', function() {
+					d3.select(this)
+						.style('fill', 'black');
+				});
+
+			// Create a table
+			tabulate(["name", "population"], cities);
+
+			function tabulate(columnNames, data) {
+				var table = d3.select('body').append('table');
+				var thead = table.append('thead');
+				var	tbody = table.append('tbody');
+
+				// append the header row
+				thead.append('tr')
+				  .selectAll('th')
+				  .data(columnNames)
+				  .enter()
+				  .append('th')
+				  .text(function (d) { 
+				  	return d; 
+				  });
+
+				// create a row for each object in the data
+				var rows = tbody.selectAll('tr')
+				  .data(data)
+				  .enter()
+				  .append('tr');
+
+				// create a cell in each row for each column
+				var cells = rows.selectAll('td')
+				  .data(function (row) {
+				    return columnNames.map(function (columnName) {
+				      return {
+				      	key: columnName, 
+				      	value: row[columnName]
+				      };
+				    });
+				  })
+				  .enter()
+				  .append('td')
+				  .text(function (d) { 
+				  	return d.value; 
+				  });
+
+			  return table;
+			}
+
+        </script>
+
+	</body>
+</html>
