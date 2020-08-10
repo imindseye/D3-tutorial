@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - d3.mouse</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  color: #333;
+			}
+			text {
+				fill: #555;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		</svg>
+
+        <script type="text/javascript">
+    		var svg = d3.select("svg");
+    		var text = svg.append('text')
+    			.text("None")
+    			.attr('x', 10)
+    			.attr('y', 10);
+    		var circle = svg.append('circle')
+    			.attr('fill', 'red')
+    			.attr('r', 10)
+    			.attr('cx', undefined)
+    			.attr('cy', undefined);
+
+    		svg.on("mousemove", function() {
+    			var mousePos = d3.mouse(this); // Equivalent to var mousePos = d3.mouse(svg.node());
+
+    			text.text(mousePos.toString());
+    			circle
+    				.attr('cx', mousePos[0])
+    				.attr('cy', mousePos[1]);
+    		});
+
+
+        </script>
+	</body>
+</html>

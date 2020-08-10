@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Drag</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  color: #333;
+			}
+			text {
+				fill: #555;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		</svg>
+
+        <script type="text/javascript">
+        	var width = 500;
+        	var height = 500;
+    		var svg = d3.select("svg");
+    		var text = svg.append('text')
+    			.text("None")
+    			.attr('x', 10)
+    			.attr('y', 10);
+    		
+
+    		var points = d3.range(10).map(function() {
+    			return {
+    				x: Math.random() * width, 
+    				y: Math.random() * height
+    			};
+    		});
+
+			var drag = d3.drag()
+    			.on("drag", dragged);
+
+            // var drag = d3.drag()
+            //     .on("start", started)
+            //     .on("drag", dragged)
+            //     .on("end", ended);
+
+    		var circles = svg.selectAll('circle')
+    			.data(points).enter()
+    			.append('circle')
+    			.attr('fill', 'red')
+    			.attr('r', 10)
+    			.attr('cx', function(d) {
+    				return d.x;
+    			})
+    			.attr('cy', function(d) {
+    				return d.y;
+    			})
+    			.call(drag);
+
+            svg.on("mousemove", function() {
+                var mousePos = d3.mouse(this);
+                text.text(mousePos.toString());
+            });
+
+    		function dragged(d) {
+    			var mousePos = d3.mouse(this);
+
+                text.text(mousePos.toString());
+    			var circle = d3.select(this);
+    			circle
+    				.attr('cx', mousePos[0])
+    				.attr('cy', mousePos[1]);
+    		}
+
+            function started(d) {
+                // do something
+            }
+
+            function ended(d) {
+                // do something
+            }
+
+        </script>
+	</body>
+</html>
