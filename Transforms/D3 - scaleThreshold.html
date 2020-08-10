@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Scale Functions - d3.scaleThreshold</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  color: #333;
+			}
+			text {
+				fill: #555;
+			}
+			.inner text {
+				text-anchor: middle;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		  	<g class="inner" transform="translate(50, 30)">
+		  	</g>
+		</svg>
+
+        <script type="text/javascript">
+        	var linearScale = d3.scaleLinear()
+				.domain([0, 100])
+				.range([0, 600]);
+
+			var value2color = d3.scaleThreshold()
+				.domain([0, 50, 100])
+				.range(['lightblue', 'orange', 'lightgreen', 'pink']);
+
+			d3.select('.inner')
+				.selectAll('rect')
+				.data(d3.range(-10, 110, 1))
+				.enter()
+				.append('rect')
+				.attr('x', function(d) {
+					return linearScale(d);
+				})
+				.attr('width', 5)
+				.attr('height', 30)
+				.style('fill', function(d) {
+					return value2color(d);
+				});
+
+        </script>
+
+	</body>
+</html>

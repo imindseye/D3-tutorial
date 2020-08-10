@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Scale Functions - Multiple Segments</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  color: #333;
+			}
+			text {
+				fill: #555;
+			}
+			.inner text {
+				text-anchor: middle;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		  	<g class="inner" transform="translate(50, 30)">
+		  	</g>
+		</svg>
+
+        <script type="text/javascript">
+        	var xScale = d3.scaleLinear()
+				.domain([-10, 10])
+				.range([0, 600]);
+
+			var value2color = d3.scaleLinear()
+				.domain([-10, 0, 10])
+				.range(['red', '#ddd', 'blue']);
+
+			var myData = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10];
+
+			d3.select('.inner')
+				.selectAll('circle')
+				.data(myData)
+				.enter()
+				.append('circle')
+				.attr('r', 10)
+				.attr('cx', function(d) {
+					return xScale(d);
+				})
+				.style('fill', function(d) {
+					return value2color(d);
+				});
+
+        </script>
+
+	</body>
+</html>

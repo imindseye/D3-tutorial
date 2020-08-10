@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Scale Functions - d3.scaleOrdinal</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  color: #333;
+			}
+			text {
+				fill: #555;
+			}
+			.inner text {
+				text-anchor: middle;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		  	<g class="inner" transform="translate(50, 30)">
+		  	</g>
+		</svg>
+
+        <script type="text/javascript">
+        	var data = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+			var linearScale = d3.scaleLinear()
+				.domain([0, 11])
+				.range([0, 600]);
+
+			var month2color = d3.scaleOrdinal()
+				.domain(data)
+				.range(['black', 'grey', 'lightgrey']);
+
+			d3.select('.inner')
+				.selectAll('text')
+				.data(data)
+				.enter()
+				.append('text')
+				.attr('x', function(d, i) {
+					return linearScale(i);
+				})
+				.text(function(d) {
+					return d;
+				})
+				.style('fill', function(d) {
+					return ordinalScale(d);
+				});
+
+        </script>
+
+	</body>
+</html>

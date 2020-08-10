@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Scale Functions - d3.scaleLinear, scalePow, scaleSqrt, scaleLog</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 14px;
+			  color: #333;
+			}
+			circle {
+				fill: orange;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="1000">
+			<g id="wrapper" transform="translate(40, 40)">
+			</g>
+		</svg>
+
+        <script type="text/javascript">
+        	var data = [
+				{day : 'Mon', value: 120},
+				{day : 'Tue', value: 60},
+				{day : 'Wed', value: 100},
+				{day : 'Thu', value: 80},
+				{day : 'Fri', value: 120}
+			];
+
+			var pointScale = d3.scalePoint()
+				.domain(['Mon', 'Tue', 'Wed', 'Thu', 'Fri'])
+				.range([0, 600])
+				.padding(0.1);
+
+			var value2height = d3.scaleLinear()
+				.domain([0, d3.max(data, function(d) {return d.value;})])
+				.range([200, 0]);
+
+			var circles = d3.select('#wrapper')
+				.selectAll('circle')
+				.data(data)
+				.enter()
+				.append('circle')
+				.attr('cx', function(d) {
+					return pointScale(d.day);
+				})
+				.attr('cy', function(d) {
+					return value2height(d.value);
+				})
+				.attr('r', 4);
+
+			var texts = d3.select('#wrapper')
+				.selectAll('text')
+				.data(data)
+				.enter().append('text')
+				.attr('x', function(d) {
+					return pointScale(d.day);
+				})
+				.attr('y', 210)
+				.attr('text-anchor', 'middle')
+				.text(function(d) {
+					return d.day;
+				});
+
+        </script>
+
+	</body>
+</html>

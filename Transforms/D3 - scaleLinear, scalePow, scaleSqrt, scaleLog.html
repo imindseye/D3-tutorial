@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Scale Functions - d3.scaleLinear, scalePow, scaleSqrt, scaleLog</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			body {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  font-size: 12px;
+			  color: #333;
+			}
+			text {
+				fill: #555;
+			}
+			.inner text {
+				text-anchor: middle;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		  	<g class="inner" transform="translate(40, 30)">
+		  	</g>
+		</svg>
+
+        <script type="text/javascript">
+        	var svg = d3.select('svg')
+
+        	var data = [ 0, 1, 2, 3, 4, 5, 6, 7, 7.5, 8, 9, 10 ];
+
+        	// scaleLinear
+			var value2width = d3.scaleLinear()
+			  	.domain([0, 10])
+			  	.range([0, 600]);
+
+			// // scalePow, k = 2
+			// var value2width = d3.scalePow()
+			// 	.exponent(2)
+			// 	.domain([0, 10])
+			//   	.range([0, 600]);
+
+			// // scalePow, k = 0.5
+			// var value2width = d3.scalePow()
+			// 	.exponent(0.5)
+			// 	.domain([0, 10])
+			//   	.range([0, 600]);
+
+			// // scaleSqrt
+			// var value2width = d3.scaleSqrt()
+			// 	.domain([0, 10])
+			//   	.range([0, 600]);
+
+			// var data = [10, 100, 1000, 10000, 100000];
+			// // scaleLog
+			// var value2width = d3.scaleLog()
+			// 	.domain([10, 100000])
+			//   	.range([0, 600]);			
+
+			svg.select('.inner')
+				.selectAll('circle')
+				.data(data)
+				.enter()
+				.append('circle')
+				.attr('r', 3)
+				.attr('cx', function(d) {
+					return value2width(d);
+				});
+
+			svg.select('.inner')
+				.selectAll('text')
+				.data(data)
+				.enter()
+				.append('text')
+				.attr('x', function(d) {
+					return value2width(d);
+				})
+				.attr('y', -8)
+				.text(function(d) {
+					return d;
+				});
+
+        </script>
+
+	</body>
+</html>

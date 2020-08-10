@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - d3.scaleSequential</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		  	<g class="inner" transform="translate(50, 30)">
+		  	</g>
+		</svg>
+
+        <script type="text/javascript">
+        	var xScale = d3.scaleLinear()
+				.domain([0, 9])
+				.range([0, 600]);
+
+			var value2color = d3.scaleOrdinal(d3.schemeCategory10);
+
+			var myData = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+			d3.select('.inner')
+				.selectAll('circle')
+				.data(myData)
+				.enter()
+				.append('circle')
+				.attr('r', 10)
+				.attr('cx', function(d) {
+					return xScale(d);
+				})
+				.style('fill', function(d) {
+					return value2color(d);
+				});
+
+        </script>
+
+	</body>
+</html>
