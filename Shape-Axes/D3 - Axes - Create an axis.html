@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Axes - Create an axis</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="1000">
+		</svg>
+
+        <script type="text/javascript">
+			var xScale = d3.scaleLinear()
+				.domain([0, 100])
+				.range([0, 500]);
+
+			var xAxis = d3.axisBottom(xScale);
+			// var xAxis = d3.axisTop(xScale);
+			// var xAxis = d3.axisLeft(xScale);
+			// var xAxis = d3.axisRight(xScale);
+
+			d3.select('svg')
+				.append('g')
+				.attr("transform", "translate(50, 50)")
+				.call(xAxis);
+
+        </script>
+
+	</body>
+</html>

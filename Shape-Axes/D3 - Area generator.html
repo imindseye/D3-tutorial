@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Area generator</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g></g>
+		</svg>
+
+        <script type="text/javascript">
+			var points = [
+				{x: 0, y0: 30, y1: 80},
+				{x: 100, y0: 80, y1: 100},
+				{x: 200, y0: 20, y1: 30},
+				{x: 300, y0: 20, y1: 50},
+				{x: 400, y0: 10, y1: 40},
+				{x: 500, y0: 50, y1: 80}
+			];
+			var areaGenerator = d3.area()
+				.x(function(d) {
+					return d.x;
+				})
+				.y0(function(d) {
+					return d.y0;
+				})
+				.y1(function(d) {
+					return d.y1;
+				});
+			d3.select('g')
+				.append('path')
+				.attr('d', areaGenerator(points))
+				.attr('fill', 'lightgrey');
+        </script>
+
+	</body>
+</html>

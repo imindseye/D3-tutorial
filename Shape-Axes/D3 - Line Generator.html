@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Line Generator</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<path></path>
+		</svg>
+
+        <script type="text/javascript">
+
+			var lineGenerator = d3.line()
+				.curve(d3.curveCardinal);
+			var points = [
+				[0, 80],
+				[100, 100],
+				[200, 30],
+				[300, 50],
+				[400, 40],
+				[500, 80]
+			];
+			var pathData = lineGenerator(points);
+			d3.select('path')
+				.attr('d', pathData)
+				.attr('fill', 'none')
+				.attr('stroke', 'black');
+
+        </script>
+
+	</body>
+</html>

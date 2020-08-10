@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Symbols</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			path {
+				fill: none;
+				stroke: #999;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g transform="translate(20, 10)"></g>
+		</svg>
+
+        <script type="text/javascript">
+
+			var symbolTypes = ['symbolCircle', 'symbolCross', 'symbolDiamond', 'symbolSquare', 'symbolStar', 'symbolTriangle', 'symbolWye'];
+
+			var symbolGenerator = d3.symbol()
+				.size(80)
+				.type(d3.symbolStar);
+				// d3.symbolCircle
+				// d3.symbolCross
+				// d3.symbolDiamond
+				// d3.symbolSquare
+				// d3.symbolStar
+				// d3.symbolTriangle
+				// d3.symbolWye
+
+
+			d3.select('g')
+				.append('path')
+				.attr('transform', 'translate(20, 20)')
+				.attr('d', symbolGenerator());
+
+        </script>
+
+	</body>
+</html>

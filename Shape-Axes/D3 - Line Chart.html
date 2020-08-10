@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Line Chart</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+		</svg>
+
+        <script type="text/javascript">
+        	
+			var svg = d3.select("svg"),
+			    margin = {top: 20, right: 20, bottom: 30, left: 50},
+			    width = +svg.attr("width") - margin.left - margin.right,
+			    height = +svg.attr("height") - margin.top - margin.bottom,
+			    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+			var parseTime = d3.timeParse("%d-%b-%y");
+			var data = [
+				{'date': parseTime('23-Apr-12'), 'price': 571.70},
+				{'date': parseTime('24-Apr-12'), 'price': 560.28},
+				{'date': parseTime('25-Apr-12'), 'price': 610.00},
+				{'date': parseTime('26-Apr-12'), 'price': 607.70},
+				{'date': parseTime('27-Apr-12'), 'price': 603.00},
+				{'date': parseTime('30-Apr-12'), 'price': 583.98},
+				{'date': parseTime('1-May-12'), 'price': 582.13}
+			];
+
+			var xScale = d3.scaleTime()
+				.domain(
+					d3.extent(data, function(d) { 
+						return d.date; 
+					})
+					)
+			    .rangeRound([0, width]);
+
+			var yScale = d3.scaleLinear()
+				.domain(
+					d3.extent(data, function(d) { 
+						return d.price; 
+					})
+					)
+			    .rangeRound([height, 0]);
+
+			var lineGenerator = d3.line()
+			    .x(function(d) { 
+			    	return xScale(d.date); 
+			    })
+			    .y(function(d) { 
+			    	return yScale(d.price); 
+			    });			
+
+			g.append("g")
+			  .attr("transform", "translate(0," + height + ")")
+			  .call(d3.axisBottom(xScale));
+
+			g.append("g")
+				  .call(d3.axisLeft(yScale))
+			  .append("text")
+				  .attr("fill", "black")
+				  .attr("transform", "rotate(-90)")
+				  .attr("y", 6)
+				  .attr("dy", "0.71em")
+				  .attr("text-anchor", "end")
+				  .text("Price ($)");
+
+			g.append("path")
+			  .attr("fill", "none")
+			  .attr("stroke", "steelblue")
+			  .attr("stroke-width", 2)
+			  .attr("stroke-linejoin", "round")
+			  .attr("stroke-linecap", "round")
+			  .attr("d", lineGenerator(data));
+
+        </script>
+
+	</body>
+</html>

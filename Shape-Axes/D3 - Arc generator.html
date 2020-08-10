@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Arc Generator</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g transform="translate(300, 110)"></g>
+		</svg>
+
+        <script type="text/javascript">
+        	var data = {
+			  startAngle: 0,
+			  endAngle: 0.25 * Math.PI,
+			  innerRadius: 50,
+			  outerRadius: 100
+			};
+
+			var arcGenerator = d3.arc();
+
+			d3.select('g')
+				.append('path')
+				.attr('d', arcGenerator(data))
+				.attr('fill', 'orange');
+
+        </script>
+
+	</body>
+</html>

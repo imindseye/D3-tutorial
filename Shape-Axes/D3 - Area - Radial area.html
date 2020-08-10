@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Radial Area</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g transform="translate(100,100)"></g>
+		</svg>
+
+        <script type="text/javascript">
+
+			var points = [
+				{angle: 0, r0: 20, r1: 80},
+				{angle: Math.PI * 0.25, r0: 20, r1: 40},
+				{angle: Math.PI * 0.5, r0: 20, r1: 80},
+				{angle: Math.PI * 0.75, r0: 20, r1: 40},
+				{angle: Math.PI, r0: 20, r1: 80},
+				{angle: Math.PI * 1.25, r0: 20, r1: 40},
+				{angle: Math.PI * 1.5, r0: 20, r1: 80},
+				{angle: Math.PI * 1.75, r0: 20, r1: 40},
+				{angle: Math.PI * 2, r0: 20, r1: 80}
+			];
+			var radialAreaGenerator = d3.radialArea()
+				.angle(function(d) {
+					return d.angle;
+				})
+				.innerRadius(function(d) {
+					return d.r0;
+				})
+				.outerRadius(function(d) {
+					return d.r1;
+				});
+			d3.select('g')
+				.append('path')
+				.attr('d', radialAreaGenerator(points))
+				.attr('fill', 'lightgrey');
+
+
+        </script>
+
+	</body>
+</html>
