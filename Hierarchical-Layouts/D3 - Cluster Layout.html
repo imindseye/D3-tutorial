@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Cluster Layout</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			.node {
+			  fill: steelblue;
+			  stroke: none;
+			}
+
+			.link {
+			  fill: none;
+			  stroke: #ccc;
+			  stroke-width: 1px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g transform="translate(5, 25)">
+		      <g class="links"></g>
+		      <g class="nodes"></g>
+		    </g>
+		</svg>
+
+        <script type="text/javascript">
+			var width = 400;
+        	var height = 200;
+
+			var data = {
+			  "name": "Eve",
+			  "children": [
+			    {
+			      "name": "Cain"
+			    },
+			    {
+			      "name": "Seth",
+			      "children": [
+			        {
+			          "name": "Enos"
+			        },
+			        {
+			          "name": "Noam"
+			        }
+			      ]
+			    },
+			    {
+			      "name": "Abel"
+			    },
+			    {
+			      "name": "Awan",
+			      "children": [
+			        {
+			          "name": "Enoch"
+			        }
+			      ]
+			    },
+			    {
+			      "name": "Azura"
+			    }
+			  ]
+			}
+
+			var root = d3.hierarchy(data, function(d) {
+					return d.children;
+				});
+
+			var clusterLayout = d3.cluster()
+			  .size([width, height]);
+			  
+			clusterLayout(root);
+
+			var allNodes = root.descendants();
+			d3.select('svg g.nodes')
+			  .selectAll('circle.node')
+			  .data(allNodes)
+			  .enter()
+			  .append('circle')
+			  .classed('node', true)
+			  .attr('cx', function(d) {return d.x;})
+			  .attr('cy', function(d) {return d.y;})
+			  .attr('r', 4);
+
+			d3.select('svg g').selectAll('text')
+			  .data(allNodes)
+			  .enter()
+			  .append('text')
+			  .attr('x', function(d) {return d.x;})
+			  .attr('y', function(d) {return d.y;})
+			  .attr('dx', 5)
+			  .attr('dy', -5)
+			  .text(function(d) {
+			    return d.data.name;
+			  })
+
+			var allLinks = root.links();
+			var lineGenerator = d3.line()
+				.x(function(d) {
+					return d.x;
+				})
+				.y(function(d) {
+					return d.y;
+				})
+				.curve(d3.curveStepAfter);
+			d3.select('svg g.links')
+			  .selectAll('path.link')
+			  .data(allLinks)
+			  .enter()
+			  .append('path')
+			  .classed('link', true)
+			  .attr('d', function(d) {
+			  	return lineGenerator([d.source, d.target]);
+			  });
+        </script>
+
+	</body>
+</html>

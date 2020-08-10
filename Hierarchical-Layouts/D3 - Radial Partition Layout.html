@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Radial Partition Layout</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			path {
+			  fill: #333;
+			  opacity: 0.3;
+			  stroke: white;
+			}
+			text {
+			  font-family: "Helvetica Neue", Helvetica, sans-serif;
+			  fill: white;
+			  font-size: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="1000" height="500">
+			<g transform="translate(160, 160)"></g>
+		</svg>
+
+        <script type="text/javascript">
+        	var radius = 150;
+			var data = {
+			  "name": "A1",
+			  "children": [
+			    {
+			      "name": "B1",
+			      "children": [
+			        {
+			          "name": "C1",
+			          "value": 100
+			        },
+			        {
+			          "name": "C2",
+			          "value": 300
+			        },
+			        {
+			          "name": "C3",
+			          "value": 200
+			        }
+			      ]
+			    },
+			    {
+			      "name": "B2",
+			      "value": 200
+			    }
+			  ]
+			};
+
+			var rootNode = d3.hierarchy(data)
+			rootNode.sum(function(d) {
+			  return d.value;
+			});
+
+			var partitionLayout = d3.partition()
+			  .size([2 * Math.PI, radius]);
+
+			partitionLayout(rootNode);
+
+			var arcGenerator = d3.arc()
+			  .startAngle(function(d) { return d.x0; })
+			  .endAngle(function(d) { return d.x1; })
+			  .innerRadius(function(d) { return d.y0; })
+			  .outerRadius(function(d) { return d.y1; });
+
+			var allNodes = rootNode.descendants();
+			var nodes = d3.select('svg g')
+			  .selectAll('g')
+			  .data(allNodes)
+			  .enter()
+			  .append('g');
+			  
+			nodes.append('path')
+			  .attr('d', arcGenerator);
+
+			nodes
+			  .append('text')
+			  .attr('transform', function(d) {
+			  	var centroid = arcGenerator.centroid(d);
+			  	return 'translate(' + centroid + ')';
+			  })
+			  .text(function(d) {
+			    return d.data.name;
+			  });
+
+        </script>
+
+	</body>
+</html>
