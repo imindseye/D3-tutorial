@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Data Binding - No bars initially</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+		<svg>
+			<!-- The screen is empty! -->
+		</svg>
+
+        <script type="text/javascript">
+
+        	aConciseWay();
+        	// aStraightforwardWay();
+
+        	function aConciseWay() {
+        		var padding = 10;
+	        	var barHeight = 20;
+	        	var data = [20, 40, 60];
+	        	var svg = d3.select("svg");
+	        	var rects = 
+	        		svg.selectAll("rect")				
+					.data(data)
+					.enter()
+					.append("rect")
+					.attr("x", 0)
+					.attr("y", function(d, i) {
+						return padding + i * (barHeight + padding);
+					})
+					.attr("width", function(d, i) { 
+						return d; 
+					})
+					.attr("height", barHeight)
+					.style("fill", "steelblue");
+        	}
+
+        	function aStraightforwardWay() {
+				var padding = 10;
+	        	var barHeight = 20;
+	        	var data = [20, 40, 60];
+
+				var svg = d3.select("svg");
+				for (var i = 0; i < data.length; ++i) {
+					svg.append("rect");
+				}
+
+	        	var rects = 
+	        		svg.selectAll("rect")				
+					.data(data)
+					.attr("x", 0)
+					.attr("y", function(d, i) {
+						return padding + i * (barHeight + padding);
+					})
+					.attr("width", function(d, i) { 
+						return d; 
+					})
+					.attr("height", barHeight)
+					.style("fill", "steelblue");
+			}
+        </script>
+
+	</body>
+</html>

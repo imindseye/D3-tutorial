@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Populations of cities</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+
+		<style>
+			table {
+				text-align: center;
+			}
+			th, td {
+			    border-bottom: 1px solid #ddd;
+			}
+			th {
+			    background-color: black;
+			    color: white;
+			}
+			tr:hover {background-color: #f5f5f5;}
+			tr:nth-child(even) {background-color: #f2f2f2;}
+		</style>
+	</head>
+
+	<body>
+
+		<svg width="500" height="200">
+		</svg>
+
+        <script type="text/javascript">
+
+        	var cities = [
+			  { name: 'London', population: 8674000},
+			  { name: 'New York', population: 8406000},
+			  { name: 'Sydney', population: 4293000},
+			  { name: 'Paris', population: 2244000},
+			  { name: 'Beijing', population: 11510000}
+			];
+
+    		var padding = 10;
+        	var barHeight = 20;
+        	var fontSize = 18;
+
+			var svg = d3.select("svg");
+			var texts = svg.selectAll('text')
+				.data(cities)
+				.enter().append("text")
+				.attr('x', 0)
+				.attr('y', function(d, i) {
+					return (i + 1) * (barHeight + padding);
+				})
+				.attr('font-size', fontSize)
+				.text(function(d) {
+					return d.name;
+				});
+
+			var scaleFactor = 1e-5;
+			var rects =  svg.selectAll("rect")
+				.data(cities)
+				.enter().append("rect")
+				.attr("x", 80)
+				.attr("y", function(d, i) {
+					return padding + i * (barHeight + padding);
+				})
+				.attr("width", function(d, i) { 
+					return d.population * scaleFactor;
+				})
+				.attr("height", barHeight)
+				.style("fill", "steelblue");
+
+
+			// highlight cities that populations are larger than five million
+			filterCities();
+
+			// sort cities
+			sortCities();
+
+			// Create a table
+			tabulate(["name", "population"], cities);
+
+			function filterCities() {
+				rects
+				.filter(function(d, i) {
+					return d.population > 5 * 1e6;
+				})
+				.style("fill", "red");
+			}
+
+			function sortCities() {
+				texts
+					.sort(function(a, b) {
+						return d3.ascending(a.population, b.population);
+						// return d3.descending(a.population, b.population);
+					})
+					.attr("y", function(d, i) {
+						return (i + 1) * (barHeight + padding);
+					})
+
+				rects
+					.sort(function(a, b) {
+						return d3.ascending(a.population, b.population);
+						// return d3.descending(a.population, b.population);
+					})
+					.attr("y", function(d, i) {
+						return padding + i * (barHeight + padding);
+					})
+			}
+
+			function tabulate(columnNames, data) {
+				var table = d3.select('body').append('table');
+				var thead = table.append('thead');
+				var	tbody = table.append('tbody');
+
+				// append the header row
+				thead.append('tr')
+				  .selectAll('th')
+				  .data(columnNames)
+				  .enter()
+				  .append('th')
+				  .text(function (d) { 
+				  	return d; 
+				  });
+
+				// create a row for each object in the data
+				var rows = tbody.selectAll('tr')
+				  .data(data)
+				  .enter()
+				  .append('tr');
+
+				// create a cell in each row for each column
+				var cells = rows.selectAll('td')
+				  .data(function (row) {
+				    return columnNames.map(function (columnName) {
+				      return {
+				      	key: columnName, 
+				      	value: row[columnName]
+				      };
+				    });
+				  })
+				  .enter()
+				  .append('td')
+				  .text(function (d) { 
+				  	return d.value; 
+				  });
+
+			  return table;
+			}
+
+        </script>
+
+	</body>
+</html>

@@ -1,0 +1,25 @@
+{
+	"cities":
+		[
+			{ 
+				"name": "London", 
+				"population": 8674000
+			},
+			{ 
+				"name": "New York", 
+				"population": 8406000
+			},
+			{ 
+				"name": "Sydney", 
+				"population": 4293000
+			},
+			{ 
+				"name": "Paris", 
+				"population": 2244000
+			},
+			{ 
+				"name": "Beijing", 
+				"population": 11510000
+			}
+		]
+}

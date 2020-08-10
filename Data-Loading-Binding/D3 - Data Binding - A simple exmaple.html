@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>D3 - Data Binding - A simple exmaple</title>
+		<!-- <script type="text/javascript" src="d3/d3.min.js"></script>  -->
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+	</head>
+
+	<body>
+
+        <svg>
+			<rect x="10" y="20" width="25" height="90"></rect>
+			<rect x="100" y="20" width="30" height="50"></rect>
+			<rect x="200" y="100" width="40" height="50"></rect>	
+        </svg>
+
+        <script type="text/javascript">
+        	var padding = 10;
+        	var barHeight = 20;
+        	var data = [20, 40, 60];
+        	var rects = 
+        		d3.selectAll("rect")				
+				.data(data)
+				.attr("x", 0)
+				.attr("y", function(d, i) {
+					return padding + i * (barHeight + padding);
+				})
+				.attr("width", function(d, i) { 
+					return d; 
+				})
+				.attr("height", barHeight)
+				.style("fill", "steelblue");
+        </script>
+
+	</body>
+</html>
